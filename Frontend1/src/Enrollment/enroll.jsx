@@ -16,17 +16,17 @@ const EnrollmentPage = () => {
     const fetchStudentDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/students/get-student/${rollNumber}`
+          `http://13.53.168.240:8080/students/get-student/${rollNumber}`
         );
         setStudentDetails(response.data);
         setStudentId(response.data.id);
         const subjectsResponse = await axios.get(
-          `http://localhost:8080/admin/get-sub?year=${response.data.yearOfStudy}&semester=${response.data.semester}`
+          `http://13.53.168.240:8080/admin/get-sub?year=${response.data.yearOfStudy}&semester=${response.data.semester}`
         );
         setSubjectStaffDetails(subjectsResponse.data);
 
         const enrolledResponse = await axios.get(
-          `http://localhost:8080/enroll/get-enrolled-subjects1/${response.data.id}`
+          `http://13.53.168.240:8080/enroll/get-enrolled-subjects1/${response.data.id}`
         );
         const enrolledIds = new Set(enrolledResponse.data);
         setEnrolledSubjects(enrolledIds);
@@ -85,7 +85,7 @@ const EnrollmentPage = () => {
 
     try {
       const enrollmentData = { studentId, subjectId, staffId };
-      const response = await axios.post(`http://localhost:8080/enroll/subjects`, enrollmentData);
+      const response = await axios.post(`http://13.53.168.240:8080/enroll/subjects`, enrollmentData);
 
       setEnrolledSubjects(new Set(enrolledSubjects.add(subjectId)));
       handleShowAlert(response.data);
@@ -104,7 +104,7 @@ const EnrollmentPage = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:8080/enroll/remove-subject/${studentId}/${subjectId}`
+        `http://13.53.168.240:8080/enroll/remove-subject/${studentId}/${subjectId}`
       );
 
       setEnrolledSubjects((prev) => {

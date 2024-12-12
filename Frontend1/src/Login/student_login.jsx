@@ -22,14 +22,14 @@ const StudentLogin = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8080/admin/student/login',
+        'http://13.53.168.240:8080/admin/student/login',
         loginData
       );
 
       if (response.status === 200) {
         const { semester: studentSemester } = response.data;
 
-        const statusResponse = await axios.get('http://localhost:8080/enrollment/status');
+        const statusResponse = await axios.get('http://13.53.168.240:8080/enrollment/status');
 
         if (statusResponse.status === 200) {
           const { semester: statusSemester } = statusResponse.data;

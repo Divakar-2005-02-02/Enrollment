@@ -21,7 +21,7 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/admin/login', loginData);
+      const response = await axios.post('http://13.53.168.240:8080/admin/login', loginData);
       if (response.status === 200) {
         setSuccess('Login successful');
         setError('');

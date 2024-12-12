@@ -9,7 +9,7 @@ function Enrollment() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const baseUrl = 'http://localhost:8080';
+  const baseUrl = 'http://13.53.168.240:8080';
 
   useEffect(() => {
     setLoading(true);

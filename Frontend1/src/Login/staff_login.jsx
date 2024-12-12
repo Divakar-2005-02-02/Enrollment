@@ -14,10 +14,10 @@ const StaffLogin = () => {
     setLoading(true);
 
     try {
-      const loginResponse = await axios.post('http://localhost:8080/admin/staff/login', { email, password });
+      const loginResponse = await axios.post('http://13.53.168.240:8080/admin/staff/login', { email, password });
 
       if (loginResponse.status === 200) {
-        const response = await axios.get(`http://localhost:8080/staff/get-id/${email}`);
+        const response = await axios.get(`http://13.53.168.240:8080/staff/get-id/${email}`);
         const staffId = response.data;
         navigate(`/staff/${staffId}/subjects`);
       }
