@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import https from 'https';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -22,27 +21,33 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post('https://51.20.18.18:8443/admin/login', loginData, {
-        httpsAgent: new https.Agent({
-          rejectUnauthorized: false, // Disable SSL verification
-        }),
-      });
+      const response = await axios.post(
+        'https://51.20.18.18:8443/admin/login',
+        loginData
+      );
 
       if (response.status === 200) {
         setSuccess('Login successful');
         setError('');
         console.log('Login Successful:', response.data);
 
+        // Redirect to dashboard
         navigate('/admin-dashboard');
-      }
-    } catch (error) {
-      if (error.response) {
-        setError('Invalid credentials');
+      } else if (response.status === 401) {
+        setError('Invalid credentials. Please try again.');
         setSuccess('');
       } else {
-        setError('An error occurred. Please try again later.');
+        setError('An unexpected error occurred.');
         setSuccess('');
       }
+    } catch (err) {
+      console.error('Error:', err);
+      if (err.response) {
+        setError('Failed to connect to the server. Please try later.');
+      } else {
+        setError('Network error. Please check your connection.');
+      }
+      setSuccess('');
     } finally {
       setLoading(false);
     }
@@ -62,7 +67,7 @@ const Login = () => {
               <div className="loader"></div>
             </div>
           )}
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} noValidate>
             <h1>Admin Login</h1>
             <div className="form-group">
               <label htmlFor="username">Username</label>
@@ -73,6 +78,8 @@ const Login = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
+                aria-required="true"
+                placeholder="Enter your username"
               />
             </div>
             <div className="form-group">
@@ -84,12 +91,23 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                aria-required="true"
+                placeholder="Enter your password"
               />
             </div>
-            <button type="submit">Login</button>
+            <button type="submit" disabled={loading}>
+              {loading ? 'Logging in...' : 'Login'}
+            </button>
           </form>
           {error && <div className="error-message error-msg">{error}</div>}
-          {success && <div className="success-message" style={{ color: 'green', textAlign: 'center' }}>{success}</div>}
+          {success && (
+            <div
+              className="success-message"
+              style={{ color: 'green', textAlign: 'center' }}
+            >
+              {success}
+            </div>
+          )}
         </div>
       </div>
       <style>
@@ -183,6 +201,11 @@ const Login = () => {
 
           button:hover {
             background: #F09440;
+          }
+
+          button:disabled {
+            background: gray;
+            cursor: not-allowed;
           }
 
           .error-msg {
