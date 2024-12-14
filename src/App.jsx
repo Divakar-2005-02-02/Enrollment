@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Enrollment from './Display/Enrollment';
+import Enrollment1 from './Display/Enrollment';
 import I1 from './integerate/i1';
 import Admin from './Login/admin_login';
 import AdminDashboard from './Display/AdminDashboard';
@@ -31,7 +31,7 @@ const App = () => {
           <Route path="/staff-login" element={<Staff />} />
           <Route path="/student-login" element={<Student />} />
           <Route path="/enrollment-not-started" element={<EnrollmentNotStarted />}/>
-          <Route path="/enrollment" element={<Enrollment />} />
+          <Route path="/enrollment" element={<Enrollment1 />} />
 
           <Route path="/staff/:staffId/subjects" element={<StaffSubjects />} />
 
