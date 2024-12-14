@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import https from 'https'; // Import https module to manage SSL certificate issues
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -20,10 +21,16 @@ const Login = () => {
       password,
     };
 
+    // Create an instance of https.Agent to bypass SSL certificate validation
+    const agent = new https.Agent({  
+      rejectUnauthorized: false // Disable certificate verification for this request
+    });
+
     try {
       const response = await axios.post(
         'https://51.20.18.18:8443/admin/login',
-        loginData
+        loginData,
+        { httpsAgent: agent } // Pass the agent as part of the request
       );
 
       if (response.status === 200) {
